@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expor a porta da aplicação
-EXPOSE 5000
+EXPOSE 3000
 
 # Definir o comando para rodar a aplicação
 CMD ["python", "main.py"]
