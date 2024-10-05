@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
+import os  # Adicione esta linha para importar a biblioteca os
 
 app = Flask(__name__)
 
@@ -29,7 +30,7 @@ def index():
         change = cols[3].text.strip()
         weekly_views = cols[4].text.strip()
 
-        # Adicionar os dados à lista, sem qualquer detecção de idioma ou tradução
+        # Adicionar os dados à lista
         artists_data.append({
             'rank': rank,
             'artist': artist,  # Nome original do artista
@@ -41,6 +42,8 @@ def index():
     return render_template('index.html', artists=artists_data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))  # Esta linha agora está correta
+
+
 
 
