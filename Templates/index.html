@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Most Viewed YouTube Artists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Top 10 Dos Videos de Musica  Mais Populares Do Youtube(Ultimas 24 Horas)</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>-/+/=</th>
+            <th>Video</th>
+            <th>Views</th>
+            <th>Likes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for artist in artists %}
+        <tr>
+            <td>{{ artist.rank }}</td>
+            <td>{{ artist.artist }}</td>
+            <td>{{ artist.views }}</td>
+            <td>{{ artist.change }}</td>
+            <td>{{ artist.weekly_views }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
