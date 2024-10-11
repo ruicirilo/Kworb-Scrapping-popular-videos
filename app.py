@@ -4,24 +4,19 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-# Função para interagir com a API do Browserless
+# Função para fazer scraping diretamente do site Kworb
 def scrape_kworb():
-    # URL da API do Browserless
-    browserless_url = 'https://chrome.browserless.io/content?token=9883aff7-00df-4cef-a4e2-e583303a1975'
+    # URL do Kworb
+    kworb_url = 'https://kworb.net/youtube/'
 
-    # Payload para a chamada da API
-    payload = {
-        "url": "https://kworb.net/youtube/"
-    }
-
-    # Fazer a requisição POST para a API do Browserless
-    response = requests.post(browserless_url, json=payload)
+    # Fazer a requisição GET para o site do Kworb
+    response = requests.get(kworb_url)
 
     # Verificar se a resposta foi bem-sucedida
     if response.status_code == 200:
         return response.text
     else:
-        print(f"Erro ao acessar Browserless: {response.status_code}, Detalhes: {response.text}")
+        print(f"Erro ao acessar Kworb: {response.status_code}, Detalhes: {response.text}")
         return None
 
 @app.route('/')
