@@ -1,16 +1,15 @@
 from flask import Flask, render_template
 import requests
-import os  # Para lidar com as variáveis de ambiente
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
 # Função para interagir com a API do Browserless
 def scrape_kworb():
-    # URL da API do Browserless (substitua pela sua chave de API)
+    # URL da API do Browserless
     browserless_url = 'https://chrome.browserless.io/content?token=9883aff7-00df-4cef-a4e2-e583303a1975'
 
-    # Payload simplificado para a chamada da API
+    # Payload para a chamada da API
     payload = {
         "url": "https://kworb.net/youtube/"
     }
@@ -49,22 +48,34 @@ def index():
                 change = cols[3].text.strip()
                 weekly_views = cols[4].text.strip()
 
-                # Adicionar os dados à lista
-                artists_data.append({
-                    'rank': rank,
-                    'artist': artist,  # Nome original do artista
-                    'views': views,
-                    'change': change,
-                    'weekly_views': weekly_views
-                })
+                # Encontrar o link do vídeo (se presente)
+                link_tag = row.find('a')
+                if link_tag and 'href' in link_tag.attrs:
+                    video_link = link_tag['href']
+                    
+                    # Garantir que a URL está correta
+                    if video_link.startswith('/watch'):
+                        video_url = f"https://www.youtube.com{video_link}"
+                    else:
+                        video_url = video_link  # Caso a URL já seja completa
+
+                    # Adicionar os dados à lista
+                    artists_data.append({
+                        'rank': rank,
+                        'artist': artist,
+                        'views': views,
+                        'change': change,
+                        'weekly_views': weekly_views,
+                        'video_url': video_url  # Incluindo o link para o vídeo
+                    })
 
             return render_template('index.html', artists=artists_data)
         else:
             print("Erro: Tabela não encontrada no conteúdo recebido.")
-            return "Erro: Tabela de dados não encontrada no conteúdo."
+            return "Erro: Tabela de dados não encontrada."
 
     else:
         return "Erro ao carregar os dados."
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
