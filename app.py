@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import requests
 from bs4 import BeautifulSoup
 
@@ -76,4 +76,4 @@ def index():
         return "Erro ao carregar os dados."
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
