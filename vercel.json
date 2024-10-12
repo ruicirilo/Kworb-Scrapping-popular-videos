@@ -12,10 +12,6 @@
       "dest": "app.py"
     }
   ],
-  "functions": {
-    "python": {
-      "includeFiles": ["templates/**"]
-    }
-  }
+  "includeFiles": ["templates/**"]
 }
 
