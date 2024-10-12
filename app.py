@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template_string
 import requests
 from bs4 import BeautifulSoup
 
@@ -37,9 +37,6 @@ def index():
 
             for row in rows:
                 cols = row.find_all('td')
-                if len(cols) < 5:
-                    continue  # Certificar que a linha tem todas as colunas esperadas
-
                 rank = cols[0].text.strip()
                 artist = cols[1].text.strip()
                 views = cols[2].text.strip()
@@ -52,8 +49,10 @@ def index():
                     video_link = link_tag['href']
                     
                     # Ajustar o link do vídeo corretamente
-                    if video_link.startswith('video/'):
-                        video_id = video_link.replace('video/', '').replace('.html', '')
+                    if video_link.startswith('/watch?v='):
+                        video_url = f"https://www.youtube.com{video_link}"
+                    elif video_link.startswith('video/'):
+                        video_id = video_link.split('/')[-1]  # Extrair o ID do vídeo
                         video_url = f"https://www.youtube.com/watch?v={video_id}"
                     else:
                         video_url = video_link  # Caso a URL já seja completa
@@ -68,7 +67,8 @@ def index():
                         'video_url': video_url  # Incluindo o link para o vídeo
                     })
 
-            return render_template('index.html', artists=artists_data)
+            # Usando render_template_string para renderizar o HTML a partir da raiz
+            return render_template_string(open('index.html').read(), artists=artists_data)
         else:
             print("Erro: Tabela não encontrada no conteúdo recebido.")
             return "Erro: Tabela de dados não encontrada."
@@ -77,4 +77,4 @@ def index():
         return "Erro ao carregar os dados."
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
