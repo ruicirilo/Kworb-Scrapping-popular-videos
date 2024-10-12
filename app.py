@@ -37,6 +37,9 @@ def index():
 
             for row in rows:
                 cols = row.find_all('td')
+                if len(cols) < 5:
+                    continue  # Certificar que a linha tem todas as colunas esperadas
+
                 rank = cols[0].text.strip()
                 artist = cols[1].text.strip()
                 views = cols[2].text.strip()
@@ -49,10 +52,8 @@ def index():
                     video_link = link_tag['href']
                     
                     # Ajustar o link do vídeo corretamente
-                    if video_link.startswith('/watch?v='):
-                        video_url = f"https://www.youtube.com{video_link}"
-                    elif video_link.startswith('video/'):
-                        video_id = video_link.split('/')[-1]  # Extrair o ID do vídeo
+                    if video_link.startswith('video/'):
+                        video_id = video_link.replace('video/', '').replace('.html', '')
                         video_url = f"https://www.youtube.com/watch?v={video_id}"
                     else:
                         video_url = video_link  # Caso a URL já seja completa
